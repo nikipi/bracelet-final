@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
@@ -96,7 +98,7 @@ import { getProductsInHomePage } from "@/lib/queries/productsQuery";
 //   },
 // ];
 
-export default async function ProductPage() {
+export default function ProductPage() {
   function cleanMetafieldArray(value: any) {
     try {
       const parsed = JSON.parse(value);
@@ -106,32 +108,70 @@ export default async function ProductPage() {
     }
   }
 
-  const allProducts = await getProductsInHomePage();
+  const [allProducts, setAllProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const cleanedProducts = allProducts.map(({ node }: any) => {
-    const metafieldsObj: any = {};
+  //   const allProducts = await getProductsInHomePage();
 
-    node.metafields.forEach(({ key, value }: any) => {
-      if (["secondary_intentions", "crystals_included"].includes(key)) {
-        metafieldsObj[key] = cleanMetafieldArray(value);
-      } else {
-        metafieldsObj[key] = value;
-      }
-    });
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await getProductsInHomePage();
+      console.log(response, "dobo sov");
 
-    return {
-      id: node.id,
-      title: node.title,
-      handle: node.handle,
-      price: node.priceRange.minVariantPrice.amount,
-      image: node.images.edges[0]?.node.originalSrc ?? null,
-      metafields: metafieldsObj,
-      totalInventory: node.totalInventory,
-      tags: node.tags,
+      const cleaned = response.map(({ node }: any) => {
+        const metafieldsObj: any = {};
+        node.metafields.forEach(({ key, value }: any) => {
+          if (["secondary_intentions", "crystals_included"].includes(key)) {
+            metafieldsObj[key] = cleanMetafieldArray(value);
+          } else {
+            metafieldsObj[key] = value;
+          }
+        });
+
+        return {
+          id: node.id,
+          title: node.title,
+          handle: node.handle,
+          price: node.priceRange.minVariantPrice.amount,
+          image: node.images.edges[0]?.node.originalSrc ?? null,
+          metafields: metafieldsObj,
+          totalInventory: node.totalInventory,
+          tags: node.tags,
+        };
+      });
+      setAllProducts(cleaned);
+      setLoading(false);
     };
-  });
 
-  console.log(cleanedProducts);
+    fetchProducts();
+  }, []);
+
+  console.log(allProducts, "dfsdhvjsvjfjjjjjjjjjjjjjjjjjj");
+
+  //   const cleanedProducts = allProducts.map(({ node }: any) => {
+  //     const metafieldsObj: any = {};
+
+  //     node.metafields.forEach(({ key, value }: any) => {
+  //       if (["secondary_intentions", "crystals_included"].includes(key)) {
+  //         metafieldsObj[key] = cleanMetafieldArray(value);
+  //       } else {
+  //         metafieldsObj[key] = value;
+  //       }
+  //     });
+
+  //     return {
+  //       id: node.id,
+  //       title: node.title,
+  //       handle: node.handle,
+  //       price: node.priceRange.minVariantPrice.amount,
+  //       image: node.images.edges[0]?.node.originalSrc ?? null,
+  //       metafields: metafieldsObj,
+  //       totalInventory: node.totalInventory,
+  //       tags: node.tags,
+  //     };
+  //   });
+
+  //   console.log(cleanedProducts);
 
   //   // State for filters
   //   const [selectedIntentions, setSelectedIntentions] = useState<string[]>([])
@@ -441,8 +481,8 @@ export default async function ProductPage() {
         </div> */}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {cleanedProducts.length > 0 ? (
-            cleanedProducts.map((product: any) => (
+          {allProducts.length > 0 ? (
+            allProducts.map((product: any) => (
               <Link href={`/product/${product.id}`} key={product.id}>
                 <Card
                   key={product.id}
