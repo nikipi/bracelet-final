@@ -75,7 +75,7 @@ export async function getAllProducts() {
 export async function getProduct(handle: string) {
   const query = `
    {
-  productByHandle(handle: "crystaragem-bracelets") {
+  productByHandle(handle: "abundance-flow-bracelet") {
     description
     handle
     id

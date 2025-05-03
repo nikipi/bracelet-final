@@ -6,7 +6,7 @@ import { CreditCard, Gift, ShoppingBag } from "lucide-react";
 
 export default async function MockPage() {
 
-  const product = await getProduct("crystaragem-bracelets")
+  const product = await getProduct("")
   
   return (
     <>
