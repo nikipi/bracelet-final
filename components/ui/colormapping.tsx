@@ -1,4 +1,4 @@
-const crystalColors = {
+const crystalColors:any = {
     Amethyst: "bg-purple-400",
     "Clear Quartz": "bg-white border border-gray-200",
     "Rose Quartz": "bg-pink-300",
@@ -19,7 +19,7 @@ const crystalColors = {
   }
   
   // Intention color mapping
-  const intentionColors = {
+  const intentionColors:any = {
     Healing: "bg-green-100 text-green-800",
     Abundance: "bg-yellow-100 text-yellow-800",
     Protection: "bg-gray-100 text-gray-800",

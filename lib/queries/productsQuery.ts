@@ -2,35 +2,40 @@ import { ShopifyData } from "../shopify";
 
 export async function getProductsInHomePage() {
   const query = `
-  query  {
-  
-    
-      products(first: 25) {
+  {
+  products(first: 25) {
+    edges {
+      node {
+        totalInventory
+        id
+        title
+        tags
+        handle
+        priceRange {
+          minVariantPrice {
+            amount
+          }
+        }
+        metafields(
+          identifiers: [{namespace: "custom", key: "primary_intentions"}, {namespace: "custom", key: "secondary_intentions"}, {namespace: "custom", key: "crystals_included"}]
+        ) {
+          id
+          key
+          namespace
+          value
+        }
+        images(first: 5) {
           edges {
             node {
-              totalInventory
-              id
-              title
-              tags
-              handle
-              priceRange {
-                minVariantPrice {
-                  amount
-                }
-              }
-              images(first: 5) {
-                edges {
-                  node {
-                    originalSrc
-                    altText
-                  }
-                }
-              }
+              originalSrc
+              altText
             }
-          
+          }
         }
+      }
     }
   }
+}
   
   
   `;
