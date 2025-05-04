@@ -140,3 +140,42 @@ export async function getProduct(handle: string) {
 
   return product;
 }
+
+// export async function getRecommendedProducts(productId: string) {
+//   const query = `
+//     {
+//       productRecommendations(productId: "${productId}") {
+//         id
+//         title
+//         handle
+//         description
+//           metafields(
+//           identifiers: [{namespace: "custom", key: "primary_intentions"}]
+//         ) {
+//           id
+//           key
+//           namespace
+//           value
+//         }
+//         featuredImage {
+//           url
+//           altText
+//         }
+//         priceRange {
+//           minVariantPrice {
+//             amount
+//             currencyCode
+//           }
+//         }
+//       }
+//     }
+//   `;
+
+//   const response = await ShopifyData(query);
+
+//   const recommended = response.data?.productRecommendations
+//     ? response.data?.productRecommendations
+//     : [];
+
+//   return recommended;
+// }

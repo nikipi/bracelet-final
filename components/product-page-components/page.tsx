@@ -1,7 +1,7 @@
 "use client";
 import { CartContext } from "@/context/shopContext";
 import ProductOptions from "../variant-options";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
@@ -26,6 +26,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { crystalColors, intentionColors } from "@/components/ui/colormapping";
+import { getProductsInHomePage } from "@/lib/queries/productsQuery";
 
 // Dynamic imports for non-critical components
 const Tabs = dynamic(
@@ -105,6 +106,43 @@ const crystalDescriptions: any = {
 };
 
 export default function ProductPage({ product }: ProductPageProps) {
+  const [allProducts, setAllProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await getProductsInHomePage();
+
+      const cleaned = response.map(({ node }: any) => {
+        const metafieldsObj: any = {};
+        node.metafields.forEach(({ key, value }: any) => {
+          if (["secondary_intentions", "crystals_included"].includes(key)) {
+            metafieldsObj[key] = cleanMetafieldArray(value);
+          } else {
+            metafieldsObj[key] = value;
+          }
+        });
+
+        return {
+          id: node.id,
+          title: node.title,
+          handle: node.handle,
+          price: node.priceRange.minVariantPrice.amount,
+          image: node.images.edges[0]?.node.originalSrc ?? null,
+          metafields: metafieldsObj,
+          totalInventory: node.totalInventory,
+          tags: node.tags,
+        };
+      });
+      setAllProducts(cleaned);
+      setLoading(false);
+    };
+
+    fetchProducts();
+  }, []);
+
+  console.log(allProducts);
+
   function cleanMetafieldArray(value: any) {
     try {
       const parsed = JSON.parse(value);
@@ -125,20 +163,6 @@ export default function ProductPage({ product }: ProductPageProps) {
       }
     });
 
-    // const variants = product.variants.edges.map(({ node }: any) => ({
-    //   id: node.id,
-    //   title: node.title,
-    //   price: node.price.amount,
-    //   selectedOptions: node.selectedOptions,
-    //   image: node.image?.src ?? null,
-    // }));
-
-    // const options = product.options.map((opt: any) => ({
-    //   name: opt.name,
-    //   values: opt.values,
-    //   id: opt.id,
-    // }));
-
     return {
       id: product.id,
       title: product.title,
@@ -147,8 +171,6 @@ export default function ProductPage({ product }: ProductPageProps) {
       image: product.images.edges[0]?.node.originalSrc ?? null,
       metafields: metafieldsObj,
       price: product.priceRange.minVariantPrice.amount,
-      // options,
-      // variants,
     };
   }
   const transformed = transformProduct(product);
@@ -200,6 +222,12 @@ export default function ProductPage({ product }: ProductPageProps) {
       }
     });
   }
+
+  const recommendedProducts = allProducts.filter(
+    (product: any) => product.id !== transformed.id
+  );
+
+  console.log(recommendedProducts);
 
   return (
     <div className="bg-[#f8f5f0] min-h-screen">
@@ -293,11 +321,11 @@ export default function ProductPage({ product }: ProductPageProps) {
             {/* Price */}
             <div className="mb-6">
               <span className="text-2xl font-medium text-[#2c2c2c]">
-                ${transformed.price}
+              £{transformed.price}
               </span>
               {/* {product.compareAtPrice && (
                 <span className="text-lg text-gray-500 line-through ml-2">
-                  ${product.compareAtPrice}
+                  £{product.compareAtPrice}
                 </span>
               )} */}
             </div>
@@ -575,11 +603,11 @@ export default function ProductPage({ product }: ProductPageProps) {
             You May Also Like
           </h2>
 
-          {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {product.relatedProducts.map((relatedProduct) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {recommendedProducts.map((relatedProduct: any) => (
               <Link
-                href={`/product/${relatedProduct.id}`}
-                key={relatedProduct.id}
+                href={`/product/${relatedProduct.handle}`}
+                key={relatedProduct.handle}
               >
                 <Card className="overflow-hidden hover:shadow-md transition-all h-full">
                   <div className="relative h-64">
@@ -591,10 +619,12 @@ export default function ProductPage({ product }: ProductPageProps) {
                     />
                     <Badge
                       className={`absolute top-4 left-4 ${
-                        intentionColors[relatedProduct.intention]
+                        intentionColors[
+                          relatedProduct.metafields.primary_intentions
+                        ]
                       }`}
                     >
-                      {relatedProduct.intention}
+                      {relatedProduct.metafields.primary_intentions}
                     </Badge>
                   </div>
                   <CardContent className="p-4">
@@ -602,13 +632,13 @@ export default function ProductPage({ product }: ProductPageProps) {
                       {relatedProduct.title}
                     </h3>
                     <div className="font-medium text-[#c9a87c]">
-                      ${relatedProduct.price}
+                    £{relatedProduct.price}
                     </div>
                   </CardContent>
                 </Card>
               </Link>
             ))}
-          </div> */}
+          </div>
         </div>
       </div>
 

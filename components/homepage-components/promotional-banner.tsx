@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 
 const promotions = [
   { id: 1, text: "Buy 2 Get  25% Off | Buy 3 Get 40% Off" },
-  { id: 2, text: "Free Shipping on Orders Over $75" },
+  { id: 2, text: "Free Shipping on Orders Over £75" },
 ]
 
 export default function PromotionalBanner() {
