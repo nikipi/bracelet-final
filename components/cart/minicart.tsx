@@ -16,6 +16,8 @@ import Counter from "../../components/common/counter";
 export default function MiniCart({ cart }: any) {
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
 
+  console.log(cart);
+
   // Destructure context values
   const { cartOpen }: any = useContext(CartContext);
   const { setCartOpen }: any = useContext(CartContext);
@@ -118,11 +120,11 @@ export default function MiniCart({ cart }: any) {
                                           </div>
 
                                           <div className="ml-4 flex-1 flex flex-col">
-                                            <div className="flex justify-between lg:text-base text-sm font-medium text-gray-900">
+                                            <div className="flex justify-between  text-sm font-medium text-gray-900">
                                               <h3>
                                                 <Link
                                                   legacyBehavior
-                                                  href={`/products/${product.handle}`}
+                                                  href={`/product/${product.handle}`}
                                                   passHref
                                                 >
                                                   <a
@@ -130,7 +132,7 @@ export default function MiniCart({ cart }: any) {
                                                       setCartOpen(false)
                                                     }
                                                   >
-                                                    {product.variantTitle}
+                                                    {product.title}
                                                   </a>
                                                 </Link>
                                               </h3>
@@ -138,7 +140,11 @@ export default function MiniCart({ cart }: any) {
                                                 £{product.variantPrice}
                                               </p>
                                             </div>
-
+                                            <div className="flex justify-between mt-2  text-xs font-medium text-gray-700">
+                                              <h3>
+                                                <a>{product.variantTitle}</a>
+                                              </h3>
+                                            </div>
                                             <div className="flex-1 flex items-end justify-between text-sm">
                                               <Counter
                                                 className=""
@@ -190,7 +196,7 @@ export default function MiniCart({ cart }: any) {
                             <div className="border-t border-gray-200 py-6 px-4 sm:px-6 md:mr-4">
                               <div className="flex justify-between text-base font-medium text-gray-900">
                                 <p>Subtotal</p>
-                                <p> £{cartTotal}</p>
+                                <p> £{parseFloat(cartTotal.toFixed(2))}</p>
                               </div>
                               {/* <p className="mt-0.5 text-sm text-gray-500">
                                 {("text-checkout-instruction")}

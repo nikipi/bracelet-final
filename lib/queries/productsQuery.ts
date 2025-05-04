@@ -75,11 +75,27 @@ export async function getAllProducts() {
 export async function getProduct(handle: string) {
   const query = `
    {
-  productByHandle(handle: "abundance-flow-bracelet") {
+  productByHandle(handle: "${handle}") {
     description
     handle
     id
     title
+     images(first: 5) {
+          edges {
+            node {
+              originalSrc
+              altText
+            }
+          }
+        }
+      metafields(
+          identifiers: [{namespace: "custom", key: "primary_intentions"}, {namespace: "custom", key: "secondary_intentions"}, {namespace: "custom", key: "crystals_included"}]
+        ) {
+          id
+          key
+          namespace
+          value
+        }
       priceRange {
                 minVariantPrice {
                   amount
@@ -107,6 +123,7 @@ export async function getProduct(handle: string) {
           }
           
           title
+           
         }
       }
     }
@@ -117,8 +134,8 @@ export async function getProduct(handle: string) {
 
   const response = await ShopifyData(query);
 
-  const product = response.data.productByHandle
-    ? response.data.productByHandle
+  const product = response.data?.productByHandle
+    ? response.data?.productByHandle
     : [];
 
   return product;

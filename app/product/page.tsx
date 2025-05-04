@@ -107,33 +107,6 @@ export default function ProductPage() {
     }
   }
 
-  //   const allProducts = await getProductsInHomePage();
-
-  //   const cleanedProducts = allProducts.map(({ node }: any) => {
-  //     const metafieldsObj: any = {};
-
-  //     node.metafields.forEach(({ key, value }: any) => {
-  //       if (["secondary_intentions", "crystals_included"].includes(key)) {
-  //         metafieldsObj[key] = cleanMetafieldArray(value);
-  //       } else {
-  //         metafieldsObj[key] = value;
-  //       }
-  //     });
-
-  //     return {
-  //       id: node.id,
-  //       title: node.title,
-  //       handle: node.handle,
-  //       price: node.priceRange.minVariantPrice.amount,
-  //       image: node.images.edges[0]?.node.originalSrc ?? null,
-  //       metafields: metafieldsObj,
-  //       totalInventory: node.totalInventory,
-  //       tags: node.tags,
-  //     };
-  //   });
-
-  //   console.log(cleanedProducts);
-
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -214,11 +187,11 @@ export default function ProductPage() {
 
     // Apply sorting
     switch (sortOption) {
-      case "price-low":
-        result.sort((a, b) => a.price - b.price);
-        break;
       case "price-high":
-        result.sort((a, b) => b.price - a.price);
+        result.sort((a: any, b: any) => a.price - b.price);
+        break;
+      case "price-low":
+        result.sort((a: any, b: any) => b.price - a.price);
         break;
       case "newest":
         // In a real app, you'd sort by date added
@@ -490,14 +463,13 @@ export default function ProductPage() {
             </Select>
           </div>
         </div>
-        {/* ---------------------------------------------------------------------- */}
         <div className="mb-6 text-[#5c5c5c]">
           Showing {filteredProducts.length} of {allProducts.length} products
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product: any) => (
-              <Link href={`/product/${product.id}`} key={product.id}>
+              <Link href={`/product/${product.handle}`} key={product.id}>
                 <Card
                   key={product.id}
                   className="overflow-hidden hover:shadow-md transition-all h-full"
@@ -557,9 +529,9 @@ export default function ProductPage() {
               <p className="text-lg text-gray-500">
                 No products match your filters.
               </p>
-              {/* <Button variant="outline" className="mt-4" onClick={clearFilters}>
+              <Button variant="outline" className="mt-4" onClick={clearFilters}>
                 Clear Filters
-              </Button> */}
+              </Button>
             </div>
           )}
         </div>
