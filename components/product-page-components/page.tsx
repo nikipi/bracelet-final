@@ -158,8 +158,6 @@ export default function ProductPage({ product }: ProductPageProps) {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   const allVariantOptions = product.variants.edges?.map((variant: any) => {
-    console.log(variant, "var");
-
     const allOptions: any = {};
 
     variant.node.selectedOptions.map((item: any) => {
@@ -202,19 +200,6 @@ export default function ProductPage({ product }: ProductPageProps) {
       }
     });
   }
-  // const [selectedSize, setSelectedSize] = useState(
-  //   JSON.parse(product.metafields.customization_options.available_sizes)[0]
-  // );
-
-  // const crystals = JSON.parse(
-  //   product.metafields.crystal_properties.crystals_included
-  // );
-  // const crystalDescriptions = JSON.parse(
-  //   product.metafields.crystal_properties.crystal_descriptions
-  // );
-  // const secondaryIntentions = JSON.parse(
-  //   product.metafields.crystal_properties.secondary_intentions
-  // );
 
   return (
     <div className="bg-[#f8f5f0] min-h-screen">
@@ -401,29 +386,6 @@ export default function ProductPage({ product }: ProductPageProps) {
                   setOptions={setOptions}
                 />
               ))}
-              {/* <RadioGroup
-                value={selectedSize}
-                onValueChange={setSelectedSize}
-                className="flex flex-wrap gap-2"
-              >
-                {JSON.parse(
-                  product.metafields.customization_options.available_sizes
-                ).map((size) => (
-                  <div key={size} className="flex items-center">
-                    <RadioGroupItem
-                      value={size}
-                      id={`size-${size}`}
-                      className="peer sr-only"
-                    />
-                    <Label
-                      htmlFor={`size-${size}`}
-                      className="px-4 py-2 border border-gray-200 rounded-md bg-white text-sm cursor-pointer peer-data-[state=checked]:border-[#c9a87c] peer-data-[state=checked]:bg-[#f8f5f0] hover:bg-[#f8f5f0]"
-                    >
-                      {size}
-                    </Label>
-                  </div>
-                ))}
-              </RadioGroup> */}
             </div>
             {/* Quantity */}
             <div className="mb-6">

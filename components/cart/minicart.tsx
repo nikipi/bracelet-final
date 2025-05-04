@@ -16,7 +16,6 @@ import Counter from "../../components/common/counter";
 export default function MiniCart({ cart }: any) {
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
 
-  console.log(cart);
 
   // Destructure context values
   const { cartOpen }: any = useContext(CartContext);

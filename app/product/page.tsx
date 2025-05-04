@@ -147,17 +147,21 @@ export default function ProductPage() {
   const [selectedCrystals, setSelectedCrystals] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState<string>("featured");
-  const [filteredProducts, setFilteredProducts] = useState(allProducts);
+  // const [filteredProducts, setFilteredProducts] = useState(allProducts);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
 
   // Apply filters and sorting
   useEffect(() => {
+    setFilteredProducts(allProducts);
+
     let result = allProducts;
 
     // Filter by intention
     if (selectedIntentions.length > 0) {
       result = result.filter((product: any) =>
-        selectedIntentions.includes(product.metafields.intention)
+        selectedIntentions.includes(product.metafields.primary_intentions)
       );
     }
 
@@ -204,7 +208,13 @@ export default function ProductPage() {
     }
 
     setFilteredProducts(result);
-  }, [selectedIntentions, selectedCrystals, priceRange, sortOption]);
+  }, [
+    allProducts,
+    selectedIntentions,
+    selectedCrystals,
+    priceRange,
+    sortOption,
+  ]);
 
   // Toggle intention filter
   const toggleIntention = (intention: string) => {
@@ -245,8 +255,6 @@ export default function ProductPage() {
     )
   );
 
-  console.log(allIntentions, "int");
-
   // Get all unique crystals from products
   const allCrystals = Array.from(
     new Set(
@@ -255,7 +263,6 @@ export default function ProductPage() {
       )
     )
   ).sort();
-  console.log(allCrystals, "cr");
 
   return (
     <div className="min-h-screen bg-[#f8f5f0]">
@@ -271,7 +278,7 @@ export default function ProductPage() {
             intention to support your journey.
           </p>
         </div>
-        Active Filters Display
+        {/* Active Filters Display */}
         {(selectedIntentions.length > 0 ||
           selectedCrystals.length > 0 ||
           priceRange.length > 0) && (

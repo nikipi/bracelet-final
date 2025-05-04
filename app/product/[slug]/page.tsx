@@ -13,7 +13,6 @@ export default async function ProductDetailPage({
   // Find the product by slug
 
   const product = await getProduct(params.slug);
-  console.log(product,"fhdfhfgfg");
 
   // If product not found, return 404
   if (!product) {
