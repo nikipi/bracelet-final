@@ -27,6 +27,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { crystalColors, intentionColors } from "@/components/ui/colormapping";
 import { getProductsInHomePage } from "@/lib/queries/productsQuery";
+import Newsletter from "../newsletter";
 
 // Dynamic imports for non-critical components
 const Tabs = dynamic(
@@ -321,7 +322,7 @@ export default function ProductPage({ product }: ProductPageProps) {
             {/* Price */}
             <div className="mb-6">
               <span className="text-2xl font-medium text-[#2c2c2c]">
-              £{transformed.price}
+                £{transformed.price}
               </span>
               {/* {product.compareAtPrice && (
                 <span className="text-lg text-gray-500 line-through ml-2">
@@ -632,7 +633,7 @@ export default function ProductPage({ product }: ProductPageProps) {
                       {relatedProduct.title}
                     </h3>
                     <div className="font-medium text-[#c9a87c]">
-                    £{relatedProduct.price}
+                      £{relatedProduct.price}
                     </div>
                   </CardContent>
                 </Card>
@@ -640,8 +641,8 @@ export default function ProductPage({ product }: ProductPageProps) {
             ))}
           </div>
         </div>
+        <Newsletter />
       </div>
-
       <Footer />
     </div>
   );

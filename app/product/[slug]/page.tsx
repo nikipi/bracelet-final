@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 
 // This would typically come from a database or API
 
-
 export default async function ProductDetailPage({
   params,
 }: {
@@ -22,7 +21,8 @@ export default async function ProductDetailPage({
   return (
     <>
       {" "}
-      <ProductPage product={product} />{" "}
+      <ProductPage product={product} /> 
+
     </>
   );
 }
