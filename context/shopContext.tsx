@@ -44,7 +44,12 @@ export default function ShopProvider({ children }: any) {
 
       newItem.variantQuantity = quantity;
 
-      const checkout = await createCheckout(newItem.id, quantity, note, beadSequence);
+      const checkout = await createCheckout(
+        newItem.id,
+        quantity,
+        note,
+        beadSequence
+      );
       console.log("Checkout created:", checkout);
 
       const cartLineId = checkout.lines.edges[0].node.id;
