@@ -26,7 +26,12 @@ export default function ShopProvider({ children }: any) {
     }
   }, []);
 
-  async function addToCart(newItem: any, quantity: number) {
+  async function addToCart(
+    newItem: any,
+    quantity: number,
+    note: any,
+    beadSequence: any
+  ) {
     setCartOpen(true);
     let newCart = [...cart];
 
@@ -39,7 +44,7 @@ export default function ShopProvider({ children }: any) {
 
       newItem.variantQuantity = quantity;
 
-      const checkout = await createCheckout(newItem.id, quantity);
+      const checkout = await createCheckout(newItem.id, quantity, note, beadSequence);
       console.log("Checkout created:", checkout);
 
       const cartLineId = checkout.lines.edges[0].node.id;
@@ -71,13 +76,20 @@ export default function ShopProvider({ children }: any) {
         console.log("New variant. Adding using cartLinesAdd...");
 
         newItem.variantQuantity = quantity;
+        const attributes = `
+        attributes: [
+          { key: "Note", value: """${note}""" },
+          { key: "BeadSequence", value: """${beadSequence}""" }
+        ],
+      `;
 
         const addLineQuery = `
           mutation {
             cartLinesAdd(cartId: "${checkoutId}", lines: [
               {
                 merchandiseId: "${newItem.id}",
-                quantity: ${quantity}
+                quantity: ${quantity},
+                ${attributes}
               }
             ]) {
               cart {
@@ -220,8 +232,8 @@ export default function ShopProvider({ children }: any) {
       }
     `;
 
-    console.log(removeLineMutation,"remove query");
-    
+    console.log(removeLineMutation, "remove query");
+
     const removeResponse = await ShopifyData(removeLineMutation);
 
     console.log("🧾 Shopify cartLinesRemove response:", removeResponse);

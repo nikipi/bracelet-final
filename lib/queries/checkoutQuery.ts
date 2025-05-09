@@ -1,6 +1,17 @@
 import { ShopifyData } from "../shopify";
 
-export async function createCheckout(id: any, quantity: any) {
+export async function createCheckout(
+  id: any,
+  quantity: any,
+  note: any,
+  beadSequence: any
+) {
+  const attributes = `
+        attributes: [
+          { key: "Note", value: """${note}""" },
+          { key: "BeadSequence", value: """${beadSequence}""" }
+        ],
+      `;
   const query = `
         mutation {
           cartCreate(input: {
@@ -8,6 +19,8 @@ export async function createCheckout(id: any, quantity: any) {
               {
                 merchandiseId: "${id}"
                 quantity: ${quantity}
+                ${attributes}
+
               }
             ]
           }) {

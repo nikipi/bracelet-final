@@ -142,7 +142,6 @@ export default function ProductPage({ product }: ProductPageProps) {
     fetchProducts();
   }, []);
 
-  console.log(allProducts);
 
   function cleanMetafieldArray(value: any) {
     try {
@@ -228,7 +227,6 @@ export default function ProductPage({ product }: ProductPageProps) {
     (product: any) => product.id !== transformed.id
   );
 
-  console.log(recommendedProducts);
 
   return (
     <div className="bg-[#f8f5f0] min-h-screen">
@@ -443,7 +441,7 @@ export default function ProductPage({ product }: ProductPageProps) {
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <Button
                 onClick={() => {
-                  addToCart(selectedVariant, quantity);
+                  addToCart(selectedVariant, quantity, "", "");
                 }}
                 className="flex-1 bg-[#c9a87c] hover:bg-[#b89b72] text-white py-6"
               >

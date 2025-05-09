@@ -42,8 +42,14 @@ export async function getProductsInHomePage() {
 
   const response = await ShopifyData(query);
 
+  // const allProducts = response.data.products.edges
+  //   ? response.data.products.edges
+  //   : [];
+
   const allProducts = response.data.products.edges
-    ? response.data.products.edges
+    ? response.data.products.edges.filter(
+        (product: any) => product.node.handle !== "custom"
+      )
     : [];
 
   return allProducts;
@@ -179,3 +185,72 @@ export async function getProduct(handle: string) {
 
 //   return recommended;
 // }
+
+export async function getCustomProduct() {
+  const query = `
+   {
+  productByHandle(handle: "custom") {
+    description
+    handle
+    id
+    title
+     images(first: 5) {
+          edges {
+            node {
+              originalSrc
+              altText
+            }
+          }
+        }
+      metafields(
+          identifiers: [{namespace: "custom", key: "primary_intentions"}, {namespace: "custom", key: "secondary_intentions"}, {namespace: "custom", key: "crystals_included"}]
+        ) {
+          id
+          key
+          namespace
+          value
+        }
+      priceRange {
+                minVariantPrice {
+                  amount
+                }
+              }
+    options {
+          name
+          values
+          id
+        }
+    variants(first: 10) {
+      edges {
+        node {
+        selectedOptions {
+                name
+                value
+              }
+          id
+          price {
+           amount
+          }
+          image {
+            altText
+            src
+          }
+          
+          title
+           
+        }
+      }
+    }
+  }
+}
+  
+  `;
+
+  const response = await ShopifyData(query);
+
+  const product = response.data?.productByHandle
+    ? response.data?.productByHandle
+    : [];
+
+  return product;
+}
