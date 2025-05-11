@@ -142,7 +142,6 @@ export default function ProductPage({ product }: ProductPageProps) {
     fetchProducts();
   }, []);
 
-
   function cleanMetafieldArray(value: any) {
     try {
       const parsed = JSON.parse(value);
@@ -226,7 +225,6 @@ export default function ProductPage({ product }: ProductPageProps) {
   const recommendedProducts = allProducts.filter(
     (product: any) => product.id !== transformed.id
   );
-
 
   return (
     <div className="bg-[#f8f5f0] min-h-screen">
