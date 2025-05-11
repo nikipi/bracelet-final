@@ -239,7 +239,7 @@ export default function ProductPage({ product }: ProductPageProps) {
             Home
           </Link>{" "}
           /
-          <Link href="/shop" className="hover:text-[#c9a87c] mx-2">
+          <Link href="/product" className="hover:text-[#c9a87c] mx-2">
             Product
           </Link>{" "}
           /<span className="text-[#2c2c2c]"> {transformed.title}</span>

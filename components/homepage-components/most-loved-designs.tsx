@@ -1,13 +1,18 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import Image from "next/image"
-import Link from "next/link"
-import { ShoppingBag } from "lucide-react"
-import { motion } from "@/components/motion"
-import BuildYourOwnDesign from "./build-your-own-design"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
+import { useEffect } from "react";
+import Link from "next/link";
+import { ShoppingBag } from "lucide-react";
+import { motion } from "@/components/motion";
+import BuildYourOwnDesign from "./build-your-own-design";
+import {
+  getAllProducts,
+  getProductsInHomePage,
+} from "@/lib/queries/productsQuery";
 
 // Energy theme categories
 const energyThemes = [
@@ -16,7 +21,7 @@ const energyThemes = [
   { id: "strength", name: "Strength" },
   { id: "self-love", name: "Self-Love" },
   { id: "tranquility", name: "Tranquility" },
-]
+];
 
 // Sample product data
 const products = [
@@ -66,7 +71,13 @@ const products = [
     price: "$149.99",
     image: "/images/crystal-bracelet-blue.png",
     energyThemes: ["intuition", "strength", "self-love", "tranquility"],
-    crystals: ["Amethyst", "Tiger's Eye", "Rose Quartz", "Selenite", "Clear Quartz"],
+    crystals: [
+      "Amethyst",
+      "Tiger's Eye",
+      "Rose Quartz",
+      "Selenite",
+      "Clear Quartz",
+    ],
   },
   {
     id: 7,
@@ -84,14 +95,54 @@ const products = [
     energyThemes: ["strength", "self-love"],
     crystals: ["Tiger's Eye", "Rose Quartz", "Red Jasper"],
   },
-]
+];
 
 export default function MostLovedDesigns() {
-  const [selectedTheme, setSelectedTheme] = useState("all")
+  function cleanMetafieldArray(value: any) {
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed.map((item) => item.trim()) : [];
+    } catch {
+      return [];
+    }
+  }
 
-  // Filter products based on selected theme
-  const filteredProducts =
-    selectedTheme === "all" ? products : products.filter((product) => product.energyThemes.includes(selectedTheme))
+  const [allProducts, setAllProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await getProductsInHomePage();
+
+      const cleaned = response.map(({ node }: any) => {
+        const metafieldsObj: any = {};
+        node.metafields.forEach(({ key, value }: any) => {
+          if (["secondary_intentions", "crystals_included"].includes(key)) {
+            metafieldsObj[key] = cleanMetafieldArray(value);
+          } else {
+            metafieldsObj[key] = value;
+          }
+        });
+
+        return {
+          id: node.id,
+          title: node.title,
+          handle: node.handle,
+          price: node.priceRange.minVariantPrice.amount,
+          image: node.images.edges[0]?.node.originalSrc ?? null,
+          metafields: metafieldsObj,
+          totalInventory: node.totalInventory,
+          tags: node.tags,
+        };
+      });
+      setAllProducts(cleaned);
+      setLoading(false);
+    };
+
+    fetchProducts();
+  }, []);
+
+  console.log(allProducts);
 
   return (
     <section className="py-12 md:py-24">
@@ -101,32 +152,15 @@ export default function MostLovedDesigns() {
             Most-Loved <span className="font-normal italic">Designs</span>
           </h2>
           <p className="text-[#5c5c5c] max-wxl mx-auto">
-            Discover our bestselling crystal jewelry, each piece carefully crafted to enhance specific energies and
-            intentions.
+            Discover our bestselling crystal jewelry, each piece carefully
+            crafted to enhance specific energies and intentions.
           </p>
-        </div>
-
-        {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {energyThemes.map((theme) => (
-            <button
-              key={theme.id}
-              onClick={() => setSelectedTheme(theme.id)}
-              className={`px-6 py-3 rounded-full transition-all ${
-                selectedTheme === theme.id
-                  ? "bg-[#c9a87c] border-[#c9a87c] text-white"
-                  : "bg-white border border-[#e5e0d5] text-[#5c5c5c] hover:border-[#c9a87c]"
-              }`}
-            >
-              {theme.name}
-            </button>
-          ))}
         </div>
 
         {/* Main content with products grid and build your own design */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* First 4 products in 3 columns */}
-          {filteredProducts.slice(0, 4).map((product, index) => (
+          {allProducts.slice(0, 4).map((product: any, index) => (
             <motion.div
               key={product.id}
               className="lg:col-span-1"
@@ -136,20 +170,37 @@ export default function MostLovedDesigns() {
             >
               <Card className="overflow-hidden hover:shadow-md transition-all h-full">
                 <div className="relative h-64">
-                  <Image src={product.image || "/placeholder.svg"} alt={product.name} fill className="object-cover" />
+                  <Image
+                    src={product.image || "/placeholder.svg"}
+                    alt={product.title}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <CardContent className="p-4">
-                  <h3 className="font-medium text-[#2c2c2c] mb-1">{product.name}</h3>
+                  <h3 className="font-medium text-[#2c2c2c] mb-1">
+                    {product.title}
+                  </h3>
                   <div className="flex flex-wrap gap-1 mb-3">
-                    {product.crystals.map((crystal, idx) => (
-                      <span key={idx} className="px-2 py-0.5 bg-[#f8f5f0] text-[#5c5c5c] rounded-full text-xs">
-                        {crystal}
-                      </span>
-                    ))}
+                    {product.metafields.crystals_included.map(
+                      (crystal: any, idx: any) => (
+                        <span
+                          key={idx}
+                          className="px-2 py-0.5 bg-[#f8f5f0] text-[#5c5c5c] rounded-full text-xs"
+                        >
+                          {crystal}
+                        </span>
+                      )
+                    )}
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-[#c9a87c] font-medium">{product.price}</span>
-                    <Button size="sm" className="bg-[#c9a87c] hover:bg-[#b89b72] text-white">
+                    <span className="text-[#c9a87c] font-medium">
+                      £{product.price}
+                    </span>
+                    <Button
+                      size="sm"
+                      className="bg-[#c9a87c] hover:bg-[#b89b72] text-white"
+                    >
                       <ShoppingBag className="h-4 w-4 mr-1" />
                       Add
                     </Button>
@@ -165,7 +216,7 @@ export default function MostLovedDesigns() {
           </div>
 
           {/* Remaining products */}
-          {filteredProducts.slice(4).map((product) => (
+          {/* {products.slice(4).map((product:any) => (
             <motion.div
               key={product.id}
               className="lg:col-span-1"
@@ -175,20 +226,35 @@ export default function MostLovedDesigns() {
             >
               <Card className="overflow-hidden hover:shadow-md transition-all h-full">
                 <div className="relative h-64">
-                  <Image src={product.image || "/placeholder.svg"} alt={product.name} fill className="object-cover" />
+                  <Image
+                    src={product.image || "/placeholder.svg"}
+                    alt={product.title}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <CardContent className="p-4">
-                  <h3 className="font-medium text-[#2c2c2c] mb-1">{product.name}</h3>
+                  <h3 className="font-medium text-[#2c2c2c] mb-1">
+                    {product.name}
+                  </h3>
                   <div className="flex flex-wrap gap-1 mb-3">
                     {product.crystals.map((crystal, idx) => (
-                      <span key={idx} className="px-2 py-0.5 bg-[#f8f5f0] text-[#5c5c5c] rounded-full text-xs">
+                      <span
+                        key={idx}
+                        className="px-2 py-0.5 bg-[#f8f5f0] text-[#5c5c5c] rounded-full text-xs"
+                      >
                         {crystal}
                       </span>
                     ))}
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-[#c9a87c] font-medium">{product.price}</span>
-                    <Button size="sm" className="bg-[#c9a87c] hover:bg-[#b89b72] text-white">
+                    <span className="text-[#c9a87c] font-medium">
+                      {product.price}
+                    </span>
+                    <Button
+                      size="sm"
+                      className="bg-[#c9a87c] hover:bg-[#b89b72] text-white"
+                    >
                       <ShoppingBag className="h-4 w-4 mr-1" />
                       Add
                     </Button>
@@ -196,18 +262,21 @@ export default function MostLovedDesigns() {
                 </CardContent>
               </Card>
             </motion.div>
-          ))}
+          ))} */}
         </div>
 
         {/* Shop All Button */}
         <div className="text-center mt-12">
-          <Link href="/shop">
-            <Button variant="outline" className="border-[#c9a87c] text-[#c9a87c] hover:bg-[#f8f5f0] px-8 py-3">
+          <Link href="/product">
+            <Button
+              variant="outline"
+              className="border-[#c9a87c] text-[#c9a87c] hover:bg-[#f8f5f0] px-8 py-3"
+            >
               Shop All Designs
             </Button>
           </Link>
         </div>
       </div>
     </section>
-  )
+  );
 }

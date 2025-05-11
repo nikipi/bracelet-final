@@ -28,10 +28,10 @@ export default function Header() {
             </button>
             <nav className="hidden md:flex items-center space-x-8">
               <Link
-                href="/shop"
+                href="/product"
                 className="text-[#5c5c5c] hover:text-[#2c2c2c] transition-colors"
               >
-                Shop
+                Products
               </Link>
               <Link
                 href="/about"
@@ -51,7 +51,10 @@ export default function Header() {
           {/* Center: Logo */}
           {/* Center: Logo */}
           <div className="flex justify-center absolute left-0 right-0 pointer-events-none">
-            <Link href="/" className="flex items-center justify-center pointer-events-auto">
+            <Link
+              href="/"
+              className="flex items-center justify-center pointer-events-auto"
+            >
               <Logo size="sm" />
             </Link>
           </div>
@@ -70,11 +73,11 @@ export default function Header() {
           <div className="container mx-auto px-4 py-4">
             <nav className="flex flex-col space-y-4">
               <Link
-                href="/shop"
+                href="/product"
                 className="text-[#5c5c5c] hover:text-[#2c2c2c] transition-colors py-2 border-b border-[#e5e0d5]"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Shop
+                Products
               </Link>
               <Link
                 href="/about"
