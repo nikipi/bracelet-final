@@ -218,7 +218,7 @@ export default function MostLovedDesigns() {
           </div>
 
           {/* Remaining products */}
-          {/* {products.slice(4).map((product:any) => (
+          {allProducts.slice(4).map((product: any) => (
             <motion.div
               key={product.id}
               className="lg:col-span-1"
@@ -237,34 +237,38 @@ export default function MostLovedDesigns() {
                 </div>
                 <CardContent className="p-4">
                   <h3 className="font-medium text-[#2c2c2c] mb-1">
-                    {product.name}
+                    {product.title}
                   </h3>
                   <div className="flex flex-wrap gap-1 mb-3">
-                    {product.crystals.map((crystal, idx) => (
-                      <span
-                        key={idx}
-                        className="px-2 py-0.5 bg-[#f8f5f0] text-[#5c5c5c] rounded-full text-xs"
-                      >
-                        {crystal}
-                      </span>
-                    ))}
+                    {product.metafields.crystals_included.map(
+                      (crystal: any, idx: any) => (
+                        <span
+                          key={idx}
+                          className="px-2 py-0.5 bg-[#f8f5f0] text-[#5c5c5c] rounded-full text-xs"
+                        >
+                          {crystal}
+                        </span>
+                      )
+                    )}
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-[#c9a87c] font-medium">
                       {product.price}
                     </span>
-                    <Button
-                      size="sm"
-                      className="bg-[#c9a87c] hover:bg-[#b89b72] text-white"
-                    >
-                      <ShoppingBag className="h-4 w-4 mr-1" />
-                      Add
-                    </Button>
+                    <Link href={`/product/${product.handle}`} key={product.id}>
+                      <Button
+                        size="sm"
+                        className="bg-[#c9a87c] hover:bg-[#b89b72] text-white"
+                      >
+                        <ShoppingBag className="h-4 w-4 mr-1" />
+                        Add
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
             </motion.div>
-          ))} */}
+          ))}
         </div>
 
         {/* Shop All Button */}
