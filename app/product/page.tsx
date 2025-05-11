@@ -29,74 +29,6 @@ import Link from "next/link";
 import { crystalColors, intentionColors } from "@/components/ui/colormapping";
 import { getProductsInHomePage } from "@/lib/queries/productsQuery";
 
-// This would typically come from a database or API
-// const allProducts = [
-//   {
-//     id: "serenity-bracelet",
-//     name: "Serenity Bracelet",
-//     price: 89.99,
-//     image: "/images/crystal-bracelet.png",
-//     crystals: ["Amethyst", "Clear Quartz", "Rose Quartz"],
-//     intention: "Healing",
-//   },
-//   {
-//     id: "abundance-flow",
-//     name: "Abundance Flow",
-//     price: 99.99,
-//     image: "/images/crystal-bracelet-blue.png",
-//     crystals: ["Citrine", "Pyrite", "Green Aventurine"],
-//     intention: "Abundance",
-//   },
-//   {
-//     id: "protection-shield",
-//     name: "Protection Shield",
-//     price: 79.99,
-//     image: "/crystal-silk-harmony.png",
-//     crystals: ["Black Tourmaline", "Obsidian", "Hematite"],
-//     intention: "Protection",
-//   },
-//   {
-//     id: "self-love-embrace",
-//     name: "Self-Love Embrace",
-//     price: 94.99,
-//     image: "/images/crystal-selection.png",
-//     crystals: ["Rose Quartz", "Rhodonite", "Moonstone"],
-//     intention: "Self-Love",
-//   },
-//   {
-//     id: "clarity-vision",
-//     name: "Clarity Vision",
-//     price: 109.99,
-//     image: "/images/crystal-bracelet.png",
-//     crystals: ["Clear Quartz", "Amethyst", "Labradorite"],
-//     intention: "Clarity",
-//   },
-//   {
-//     id: "confidence-boost",
-//     name: "Confidence Boost",
-//     price: 84.99,
-//     image: "/images/crystal-bracelet-blue.png",
-//     crystals: ["Tiger's Eye", "Carnelian", "Citrine"],
-//     intention: "Confidence",
-//   },
-//   {
-//     id: "peaceful-sleep",
-//     name: "Peaceful Sleep",
-//     price: 89.99,
-//     image: "/crystal-silk-harmony.png",
-//     crystals: ["Amethyst", "Selenite", "Moonstone"],
-//     intention: "Sleep",
-//   },
-//   {
-//     id: "grounding-force",
-//     name: "Grounding Force",
-//     price: 79.99,
-//     image: "/images/crystal-selection.png",
-//     crystals: ["Smoky Quartz", "Hematite", "Red Jasper"],
-//     intention: "Grounding",
-//   },
-// ];
-
 export default function ProductPage() {
   function cleanMetafieldArray(value: any) {
     try {
@@ -340,7 +272,6 @@ export default function ProductPage() {
             </div>
           </div>
         )}{" "}
-        {/* --------------------------------------------------------------------------- */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
