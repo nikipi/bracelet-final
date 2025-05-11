@@ -180,6 +180,8 @@ export default function ProductPage() {
     setPriceRange([]);
   };
 
+  console.log(allProducts);
+  
   // Get all unique intentions from products
   const allIntentions = Array.from(
     new Set(
@@ -315,7 +317,7 @@ export default function ProductPage() {
                       >
                         <div
                           className={`w-3 h-3 rounded-full ${
-                            intentionColors[intention].split(" ")[0]
+                            intentionColors[intention]?.split(" ")[0]
                           }`}
                         ></div>
                         {intention}
