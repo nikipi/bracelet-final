@@ -197,13 +197,15 @@ export default function MostLovedDesigns() {
                     <span className="text-[#c9a87c] font-medium">
                       £{product.price}
                     </span>
-                    <Button
-                      size="sm"
-                      className="bg-[#c9a87c] hover:bg-[#b89b72] text-white"
-                    >
-                      <ShoppingBag className="h-4 w-4 mr-1" />
-                      Add
-                    </Button>
+                    <Link href={`/product/${product.handle}`} key={product.id}>
+                      <Button
+                        size="sm"
+                        className="bg-[#c9a87c] hover:bg-[#b89b72] text-white"
+                      >
+                        <ShoppingBag className="h-4 w-4 mr-1" />
+                        Add
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>
