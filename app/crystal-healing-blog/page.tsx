@@ -1,9 +1,6 @@
 import InfoPageLayout from "@/components/info-page-layout";
-import Image from "next/image";
-import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
+import BlogClient from "@/components/BlogClient";
 
-// SEO metadata for this page
 export const metadata = {
   title: "Crystal Healing Blog | Everything You want to know about Crystal Healing",
   description:
@@ -62,7 +59,7 @@ const blogPosts = [
     excerpt: "Learn how to properly cleanse and charge your crystal bracelet to maintain its energy and healing properties. Keep your jewelry energetically clear and powerful.",
     image: "/images/crystal-ensemble.png",
     date: "March 28, 2024",
-    category: "Crystal Care",
+    category: "Tutorials",
     slug: "how-to-cleanse-and-charge-your-crystal-bracelet",
   },
   {
@@ -71,7 +68,7 @@ const blogPosts = [
     excerpt: "Is crystal healing just a trend, or is there scientific evidence supporting its benefits? Dive into the science of how crystals may influence your energy and wellbeing.",
     image: "/images/crystal-science.png",
     date: "February 22, 2024",
-    category: "Education",
+    category: "Tutorials",
     slug: "is-crystal-healing-real",
   },
   {
@@ -155,57 +152,8 @@ export default function BlogPage() {
       title="Crystal Healing Blog & Guides"
       subtitle="Discover the meaning, properties, and care tips for your favorite healing crystals."
     >
-      <div className="mb-12">
-        <div className="flex flex-wrap gap-3 justify-center">
-          <button className="px-4 py-2 rounded-full bg-[#c9a87c] text-white">All</button>
-          <button className="px-4 py-2 rounded-full bg-[#f0ebe2] text-[#5c5c5c] hover:bg-[#e5e0d5]">
-            Crystal Properties
-          </button>
-          <button className="px-4 py-2 rounded-full bg-[#f0ebe2] text-[#5c5c5c] hover:bg-[#e5e0d5]">
-            Crystal Care
-          </button>
-          <button className="px-4 py-2 rounded-full bg-[#f0ebe2] text-[#5c5c5c] hover:bg-[#e5e0d5]">
-            Manifestation
-          </button>
-          <button className="px-4 py-2 rounded-full bg-[#f0ebe2] text-[#5c5c5c] hover:bg-[#e5e0d5]">
-            Tutorials
-          </button>
-          <button className="px-4 py-2 rounded-full bg-[#f0ebe2] text-[#5c5c5c] hover:bg-[#e5e0d5]">
-            Astrology
-          </button>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-        {blogPosts.map((post) => (
-          <Link href={`/crystal-healing-blog/${post.slug}`} key={post.id}>
-            <Card className="overflow-hidden hover:shadow-md transition-shadow">
-              <div className="relative h-48">
-                <Image
-                  src={post.image || "/placeholder.svg"}
-                  alt={post.title}
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute top-4 left-4 bg-[#c9a87c] text-white text-xs px-2 py-1 rounded-full">
-                  {post.category}
-                </div>
-              </div>
-              <CardContent className="p-6">
-                <p className="text-[#5c5c5c] text-sm mb-2">{post.date}</p>
-                <h3 className="font-serif text-xl font-light text-[#2c2c2c] mb-2">{post.title}</h3>
-                <p className="text-[#5c5c5c] text-sm">{post.excerpt}</p>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
-      </div>
-
-      <div className="text-center">
-        <button className="border border-[#c9a87c] text-[#c9a87c] hover:bg-[#f8f5f0] px-8 py-3 rounded-full">
-          Load More Articles
-        </button>
-      </div>
+      <BlogClient blogPosts={blogPosts} />
     </InfoPageLayout>
   );
 }
+

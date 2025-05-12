@@ -157,7 +157,7 @@ const ExplanationPanel: FC<IProps> = ({
         <div className="mt-8 space-y-4">
           <Button
             variant="outline"
-            onClick={() => router.push("/customize")}
+            onClick={() => router.push("/build-your-own-crystal-jewelry")}
             className="w-full border-[#e5e0d5] text-[#5c5c5c] hover:bg-[#f8f5f0]"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />

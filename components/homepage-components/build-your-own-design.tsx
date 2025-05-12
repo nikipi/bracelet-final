@@ -114,7 +114,7 @@ export default function BuildYourOwnDesign({ variant = "fixed", className = "" }
               </div>
 
               {/* Bead Selector */}
-              <div className="w-full md:w-1/3">
+              <div className="w-9/12 scale-90 origin-top-left md:scale-100 md:w-1/3">
                 <BeadSelector
                   selectedBeadIndex={selectedBeadIndex}
                   bracelet={bracelet}
@@ -173,9 +173,13 @@ export default function BuildYourOwnDesign({ variant = "fixed", className = "" }
 
             <div className="space-y-3 mb-4">
               {["Discover your intentions and choose your desired energy", "Build your personalized bracelet or jewelry", "Add your personal touches"].map((text, idx) => (
-                <div key={idx} className="flex items-center gap-3 p-2 rounded-md bg-[#f8f5f0]">
-                  <div className="w-8 h-8 rounded-full bg-[#c9a87c] text-white flex items-center justify-center">{idx + 1}</div>
-                  <span className="text-sm text-[#5c5c5c]">{text}</span>
+                <div key={idx} className="flex items-center gap-3 p-4 rounded-md bg-[#f8f5f0]">
+                <div className="w-6 h-6 flex items-center justify-center rounded-full bg-[#c9a87c] text-white text-[10px] sm:text-sm flex-shrink-0">
+                    {idx + 1}
+                  </div>
+                  <span className="text-sm text-[#5c5c5c] flex-1">
+                    {text}
+                  </span>
                 </div>
               ))}
             </div>
@@ -191,13 +195,13 @@ export default function BuildYourOwnDesign({ variant = "fixed", className = "" }
       </AnimatePresence>
 
       {/* Toggle Button */}
-      <button
+{/*       <button
         onClick={() => setIsMinimized(!isMinimized)}
         className="mt-2 ml-auto flex items-center justify-center w-10 h-10 rounded-full bg-[#c9a87c] text-white shadow-md hover:bg-[#b89b72] transition-all"
         aria-label={isMinimized ? "Expand custom design panel" : "Minimize custom design panel"}
       >
         {isMinimized ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
-      </button>
+      </button> */}
     </div>
   )
 }

@@ -2,24 +2,29 @@ import InfoPageLayout from "@/components/info-page-layout"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import "@/styles/globals.css"
 
 export default function AboutPage() {
   return (
-    <InfoPageLayout title="Our Story" subtitle="Discover the passion and purpose behind our handcrafted crystal bracelets">
+    <InfoPageLayout
+      title="Not just our story, but yours"
+      subtitle="You are the light. We just remind you."
+    >
       <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
         <div>
           <h2 className="font-serif text-2xl font-light text-[#2c2c2c] mb-4">Our Mission</h2>
           <p className="text-[#5c5c5c] mb-4 leading-relaxed">
-            At Yumiere, we believe in the transformative power of crystals to enhance wellbeing, promote healing,
-            and manifest positive energy in your life.
+            <strong><span className="green-text">Yumiere</span></strong> was born from the belief that healing is not something that happens to you — it’s something you choose. 
+            Blending the essence of <strong><span className="green-text">玉 (yu)</span></strong>, meaning jade or precious gem in Chinese, and <strong><span className="green-text">Lumière</span></strong>, the French word for light, 
+            our name reflects a journey of illumination through intention.
           </p>
           <p className="text-[#5c5c5c] mb-4 leading-relaxed">
-            Our mission is to create beautiful, high-quality crystal jewelry that not only looks stunning but also
-            serves as a powerful tool for your spiritual and emotional journey.
+            We create crystal jewelry that does more than beautify — it empowers. Each piece is a ritual, a reminder, and 
+            a tool for aligning with your inner light. We invite you to wear your energy with purpose and let every gemstone 
+            support your path to self-discovery, healing, and strength.
           </p>
           <p className="text-[#5c5c5c] leading-relaxed">
-            Each piece is thoughtfully designed, ethically sourced, and handcrafted with intention to help you harness
-            the natural energies of the earth's most precious stones.
+          We believe in the active pursuit of healing. <strong><span className="green-text">Yumiere</span></strong> isn’t just about crystals — it’s about claiming your own light. Every piece is a ritual of intention, a daily reminder that you are the one who chooses to grow, to radiate, and to rise.
           </p>
         </div>
         <div className="relative h-80 rounded-lg overflow-hidden">
@@ -31,22 +36,19 @@ export default function AboutPage() {
         <div className="bg-white p-8 rounded-xl shadow-sm border border-[#e5e0d5]">
           <h3 className="font-serif text-xl font-light text-[#2c2c2c] mb-3">Handcrafted Quality</h3>
           <p className="text-[#5c5c5c]">
-            Every bracelet is carefully assembled by our skilled artisans, ensuring the highest quality and attention to
-            detail.
+            Each bracelet is assembled by hand with care and precision, ensuring the highest quality and thoughtful craftsmanship.
           </p>
         </div>
         <div className="bg-white p-8 rounded-xl shadow-sm border border-[#e5e0d5]">
           <h3 className="font-serif text-xl font-light text-[#2c2c2c] mb-3">Ethically Sourced</h3>
           <p className="text-[#5c5c5c]">
-            We partner with responsible suppliers who share our commitment to ethical mining practices and fair labor
-            conditions.
+            We work only with trusted partners who prioritize fair labor practices and environmentally respectful sourcing.
           </p>
         </div>
         <div className="bg-white p-8 rounded-xl shadow-sm border border-[#e5e0d5]">
           <h3 className="font-serif text-xl font-light text-[#2c2c2c] mb-3">Energy Infused</h3>
           <p className="text-[#5c5c5c]">
-            Each bracelet is cleansed, charged under moonlight, and infused with positive intentions before being sent
-            to you.
+            Every piece is energetically cleansed, charged under moonlight, and infused with loving intentions before it finds its way to you.
           </p>
         </div>
       </div>
@@ -71,8 +73,6 @@ export default function AboutPage() {
           </Link>
         </div>
       </div>
-
-      
     </InfoPageLayout>
   )
 }

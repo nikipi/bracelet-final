@@ -20,7 +20,6 @@ const YumiereLogo: React.FC<YumiereLogoProps> = ({
   size = 'md',
 }) => {
   const sizes = {
-
     sm: {
       container: "h-8",
       jade: "h-8",
@@ -49,36 +48,27 @@ const YumiereLogo: React.FC<YumiereLogoProps> = ({
         className
       )}
     >
-      {/* Jade Character with Pulse Animation */}
+      {/* Jade Character without breathing motion */}
       {showCircle ? (
-       <motion.div
-       initial={{ scale: 1 }}
-       animate={{ scale: [1, 1.1, 1] }}
-       transition={{ 
-         duration: 8,          // 8 seconds total for inhale + exhale
-         repeat: Infinity, 
-         repeatType: "mirror", 
-         ease: "easeInOut",
-       }}
-       className={cn(
-         "flex items-center justify-center border-2 border-[#3AA678] rounded-full", 
-         sizes[size].circle
-       )}
-     >
-       <span 
-         className={cn(
-           "font-serif text-[#3AA678]",
-           {
-             "text-base": size === "sm",
-             "text-xl": size === "md",
-             "text-2xl": size === "lg",
-           }
-         )}
-       >
-         玉
-       </span>
-     </motion.div>
-     
+        <div
+          className={cn(
+            "flex items-center justify-center border-2 border-[#3AA678] rounded-full", 
+            sizes[size].circle
+          )}
+        >
+          <span 
+            className={cn(
+              "font-serif text-[#3AA678]",
+              {
+                "text-base": size === "sm",
+                "text-xl": size === "md",
+                "text-2xl": size === "lg",
+              }
+            )}
+          >
+            玉
+          </span>
+        </div>
       ) : (
         <motion.span
           initial={{ opacity: 0, scale: 0.9 }}

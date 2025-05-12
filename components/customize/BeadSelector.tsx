@@ -118,7 +118,7 @@ const BeadSelector: FC<BeadSelectorProps> = ({
               <div className="pt-1">
                 <h3 className="text-[#2c2c2c] font-medium text-xs mb-1">Benefits:</h3>
                 <div className="flex flex-wrap gap-1">
-                  {beadTypes[bracelet[selectedBeadIndex]]?.benefits.map((benefit) => (
+                  {beadTypes[bracelet[selectedBeadIndex]]?.benefits.slice(0, 3).map((benefit) => (
                     <span
                       key={benefit}
                       className="px-2 py-1 bg-[#f0ebe2] text-[#c9a87c] rounded-full text-xs"

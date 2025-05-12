@@ -67,7 +67,14 @@ export default function Footer() {
               Handcrafted crystal jewelry designed to enhance your energy,
               promote healing, and manifest abundance in your life.
             </p>
-            <form onSubmit={handleSubmit}>
+
+
+            <form onSubmit={handleSubmit} className="mt-6">
+            <h6 className="text-base font-semibold mb-3">Subscribe & Get 10% Off</h6>
+
+                  <p className="text-sm text-[#a0a0a0] mb-4">
+          Join our crystal-loving community and receive energy tips, new arrivals & special offers straight to your inbox.
+        </p>
               <div className="items-center mx-auto mb-3 space-y-4 max-w-screen-sm sm:flex sm:space-y-0 mt-2">
                 <div className="relative w-full">
                   <label
@@ -117,6 +124,8 @@ export default function Footer() {
             </form>
           </div>
           <div>
+
+
             <Link href="/product" className="font-medium mb-4">
               Products
             </Link>

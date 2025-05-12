@@ -46,7 +46,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <Link href="/product">
+          <Link href="/product" scroll={false}>
             <Button className="bg-white text-[#2c2c2c] hover:bg-[#f0ebe2] px-8 py-6 text-lg">
               Transform Your Energy Now
             </Button>

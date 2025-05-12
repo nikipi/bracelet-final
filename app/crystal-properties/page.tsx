@@ -177,7 +177,7 @@ function CrystalPropertiesContent() {
       </div>
 
       <Tabs value={activeTab} onValueChange={handleTabChange} className="mb-16">
-        <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-8">
+      <TabsList className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 mb-16">
           {Object.keys(CRYSTAL_CATEGORIES).map((category) => (
             <TabsTrigger
               key={category}
@@ -259,3 +259,4 @@ function CrystalPropertiesContent() {
     </InfoPageLayout>
   )
 }
+
