@@ -32,6 +32,17 @@ export async function getProductsInHomePage() {
             }
           }
         }
+        variants(first: 10) {
+          edges {
+            node {
+              id
+              price {
+                amount
+              }
+              availableForSale
+            }
+          }
+        }
       }
     }
   }

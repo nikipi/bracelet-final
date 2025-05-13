@@ -94,23 +94,16 @@ interface ProductPageProps {
   product: any; // In a real app, you'd use a proper type here
 }
 
-type CrystalDescription = {
-  [key: string]: string;
-};
-
-const crystalDescriptions: CrystalDescription = {
-  Amethyst: "Promotes calm and balance, helps with stress relief and emotional healing.",
-  "Clear Quartz": "Amplifies energy and thought, aids concentration and memory.",
+const crystalDescriptions: any = {
+  Amethyst:
+    "Promotes calm and balance, helps with stress relief and emotional healing.",
+  "Clear Quartz":
+    "Amplifies energy and thought, aids concentration and memory.",
   "Rose Quartz": "Stone of unconditional love, promotes compassion and peace.",
   Citrine: "Known as the stone of wealth, it attracts abundance and success.",
   "Green Aventurine": "Brings luck, prosperity, and good fortune.",
-  Pyrite: "A stone of protection and abundance, it enhances confidence and manifesting power.",
-  "Black Tourmaline": "Protects against negative energy and helps with grounding.",
-  "Lapis Lazuli": "Enhances wisdom, truth, and communication, promotes self-awareness.",
-  "Tiger's Eye": "Boosts courage, confidence, and willpower, grounding and protective.",
-  Moonstone: "Encourages intuition, emotional balance, and new beginnings.",
-  Jade: "Symbolizes harmony and prosperity, supports emotional and physical well-being.",
-  Amazonite: "Soothes the spirit and enhances communication, promotes creativity and emotional healing."
+  Pyrite:
+    "A stone of protection and abundance, it enhances confidence and manifesting power.",
 };
 
 export default function ProductPage({ product }: ProductPageProps) {
@@ -118,6 +111,8 @@ export default function ProductPage({ product }: ProductPageProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     const fetchProducts = async () => {
       const response = await getProductsInHomePage();
 
@@ -650,3 +645,4 @@ export default function ProductPage({ product }: ProductPageProps) {
     </div>
   );
 }
+

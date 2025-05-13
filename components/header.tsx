@@ -27,7 +27,7 @@ export default function Header() {
               )}
             </button>
             <nav className="hidden md:flex items-center space-x-4 lg:space-x-6 text-sm whitespace-nowrap font-medium">
-            <Link href="/shop" className="text-[#5c5c5c] hover:text-[#2c2c2c]">
+            <Link href="/product" className="text-[#5c5c5c] hover:text-[#2c2c2c]">
               Shop
             </Link>
             <Link href="/build-your-own-crystal-jewelry" className="text-[#5c5c5c] hover:text-[#2c2c2c]">

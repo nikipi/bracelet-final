@@ -84,6 +84,8 @@ export default function MostLovedDesigns() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
+              <Link href={`/product/${product.handle}`} key={product.id}>
+               
               <Card className="overflow-hidden hover:shadow-md transition-all h-full">
                 <div className="relative h-64">
                   <Image
@@ -93,7 +95,7 @@ export default function MostLovedDesigns() {
                     className="object-cover"
                   />
                 </div>
-                <CardContent className="p-4">
+                <CardContent className="p-4 relative border-t-2 border-gray-200 flex flex-col" >
                   <h3 className="font-medium text-[#2c2c2c] mb-1">
                     {product.title}
                   </h3>
@@ -109,22 +111,15 @@ export default function MostLovedDesigns() {
                       )
                     )}
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-[#c9a87c] font-medium">
+                  <div className="flex justify-between">
+                    <span className="text-[#c9a87c] font-medium ml-auto">
                       £{product.price}
                     </span>
-                    <Link href={`/product/${product.handle}`} key={product.id}>
-                      <Button
-                        size="sm"
-                        className="bg-[#c9a87c] hover:bg-[#b89b72] text-white"
-                      >
-                        <ShoppingBag className="h-4 w-4 mr-1" />
-                        Add
-                      </Button>
-                    </Link>
+                   
                   </div>
                 </CardContent>
               </Card>
+              </Link>
             </motion.div>
           ))}
 
@@ -167,19 +162,11 @@ export default function MostLovedDesigns() {
                       )
                     )}
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-[#c9a87c] font-medium">
+                  <div className="flex justify-between">
+                    <span className="text-[#c9a87c] font-medium ml-auto">
                       {product.price}
                     </span>
-                    <Link href={`/product/${product.handle}`} key={product.id}>
-                      <Button
-                        size="sm"
-                        className="bg-[#c9a87c] hover:bg-[#b89b72] text-white"
-                      >
-                        <ShoppingBag className="h-4 w-4 mr-1" />
-                        Add
-                      </Button>
-                    </Link>
+                    
                   </div>
                 </CardContent>
               </Card>

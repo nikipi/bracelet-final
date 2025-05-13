@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -41,45 +41,34 @@ export default function ProductPage() {
 
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const pageTopRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      try {
-        const response = await getProductsInHomePage();
+      const response = await getProductsInHomePage();
 
-        const cleaned = response.map(({ node }: any) => {
-          const metafieldsObj: any = {};
-          node.metafields.forEach(({ key, value }: any) => {
-            if (["secondary_intentions", "crystals_included"].includes(key)) {
-              metafieldsObj[key] = cleanMetafieldArray(value);
-            } else {
-              metafieldsObj[key] = value;
-            }
-          });
-
-          return {
-            id: node.id,
-            title: node.title,
-            handle: node.handle,
-            price: node.priceRange.minVariantPrice.amount,
-            image: node.images.edges[0]?.node.originalSrc ?? null,
-            metafields: metafieldsObj,
-            totalInventory: node.totalInventory,
-            tags: node.tags,
-          };
+      const cleaned = response.map(({ node }: any) => {
+        const metafieldsObj: any = {};
+        node.metafields.forEach(({ key, value }: any) => {
+          if (["secondary_intentions", "crystals_included"].includes(key)) {
+            metafieldsObj[key] = cleanMetafieldArray(value);
+          } else {
+            metafieldsObj[key] = value;
+          }
         });
-        setAllProducts(cleaned);
-        setLoading(false);
 
-        // Scroll to top after products are loaded
-        useEffect(() => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }, []);
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-        setLoading(false);
-      }
+        return {
+          id: node.id,
+          title: node.title,
+          handle: node.handle,
+          price: node.priceRange.minVariantPrice.amount,
+          image: node.images.edges[0]?.node.originalSrc ?? null,
+          metafields: metafieldsObj,
+          totalInventory: node.totalInventory,
+          tags: node.tags,
+        };
+      });
+      setAllProducts(cleaned);
+      setLoading(false);
     };
 
     fetchProducts();
@@ -91,8 +80,9 @@ export default function ProductPage() {
   const [priceRange, setPriceRange] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState<string>("featured");
   // const [filteredProducts, setFilteredProducts] = useState(allProducts);
-  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
 
   // Apply filters and sorting
   useEffect(() => {
@@ -209,288 +199,286 @@ export default function ProductPage() {
   ).sort();
 
   return (
-    <div>
-      <div ref={pageTopRef}></div>
-      <div className="min-h-screen bg-[#f8f5f0]">
-        <Header />
+    <div className="min-h-screen bg-[#f8f5f0]">
+      <Header />
 
-        <main className="container mx-auto px-4 py-8">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-serif font-light text-[#2c2c2c] mb-4">
-              Shop Our Collection
-            </h1>
-            <p className="text-[#5c5c5c] max-w-2xl mx-auto">
-              Discover our handcrafted crystal bracelets, each designed with
-              intention to support your journey.
-            </p>
-          </div>
-          {/* Active Filters Display */}
-          {(selectedIntentions.length > 0 ||
-            selectedCrystals.length > 0 ||
-            priceRange.length > 0) && (
-            <div className="mb-6">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-sm text-gray-500">Active Filters:</span>
+      <main className="container mx-auto px-4 py-8">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-serif font-light text-[#2c2c2c] mb-4">
+            Shop Our Collection
+          </h1>
+          <p className="text-[#5c5c5c] max-w-2xl mx-auto">
+            Discover our handcrafted crystal bracelets, each designed with
+            intention to support your journey.
+          </p>
+        </div>
+        {/* Active Filters Display */}
+        {(selectedIntentions.length > 0 ||
+          selectedCrystals.length > 0 ||
+          priceRange.length > 0) && (
+          <div className="mb-6">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm text-gray-500">Active Filters:</span>
 
-                {selectedIntentions.map((intention) => (
-                  <Badge
-                    key={intention}
-                    variant="outline"
-                    className="flex items-center gap-1 px-2 py-1"
-                    onClick={() => toggleIntention(intention)}
-                  >
-                    {intention}
-                    <span className="cursor-pointer">×</span>
-                  </Badge>
-                ))}
-
-                {selectedCrystals.map((crystal) => (
-                  <Badge
-                    key={crystal}
-                    variant="outline"
-                    className="flex items-center gap-1 px-2 py-1"
-                    onClick={() => toggleCrystal(crystal)}
-                  >
-                    <span
-                      className={`w-2 h-2 rounded-full ${crystalColors[crystal]}`}
-                    ></span>
-                    {crystal}
-                    <span className="cursor-pointer">×</span>
-                  </Badge>
-                ))}
-
-                {priceRange.map((range) => (
-                  <Badge
-                    key={range}
-                    variant="outline"
-                    className="flex items-center gap-1 px-2 py-1"
-                    onClick={() => togglePriceRange(range)}
-                  >
-                    {range === "under-80"
-                      ? "Under $80"
-                      : range === "80-100"
-                      ? "$80 - $100"
-                      : "Over $100"}
-                    <span className="cursor-pointer">×</span>
-                  </Badge>
-                ))}
-
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={clearFilters}
-                  className="text-sm text-gray-500"
+              {selectedIntentions.map((intention) => (
+                <Badge
+                  key={intention}
+                  variant="outline"
+                  className="flex items-center gap-1 px-2 py-1"
+                  onClick={() => toggleIntention(intention)}
                 >
-                  Clear All
-                </Button>
-              </div>
+                  {intention}
+                  <span className="cursor-pointer">×</span>
+                </Badge>
+              ))}
+
+              {selectedCrystals.map((crystal) => (
+                <Badge
+                  key={crystal}
+                  variant="outline"
+                  className="flex items-center gap-1 px-2 py-1"
+                  onClick={() => toggleCrystal(crystal)}
+                >
+                  <span
+                    className={`w-2 h-2 rounded-full ${crystalColors[crystal]}`}
+                  ></span>
+                  {crystal}
+                  <span className="cursor-pointer">×</span>
+                </Badge>
+              ))}
+
+              {priceRange.map((range) => (
+                <Badge
+                  key={range}
+                  variant="outline"
+                  className="flex items-center gap-1 px-2 py-1"
+                  onClick={() => togglePriceRange(range)}
+                >
+                  {range === "under-80"
+                    ? "Under $80"
+                    : range === "80-100"
+                    ? "$80 - $100"
+                    : "Over $100"}
+                  <span className="cursor-pointer">×</span>
+                </Badge>
+              ))}
+
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={clearFilters}
+                className="text-sm text-gray-500"
+              >
+                Clear All
+              </Button>
             </div>
-          )}{" "}
-          <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-              <SheetTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2">
-                  <Filter className="h-4 w-4" />
-                  Filter
-                  {(selectedIntentions.length > 0 ||
-                    selectedCrystals.length > 0 ||
-                    priceRange.length > 0) && (
-                    <Badge className="ml-1 bg-[#c9a87c]">
-                      {selectedIntentions.length +
-                        selectedCrystals.length +
-                        priceRange.length}
-                    </Badge>
-                  )}
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-                <SheetHeader>
-                  <SheetTitle>Filter Products</SheetTitle>
-                  <SheetDescription>
-                    Narrow down your search with these filters.
-                  </SheetDescription>
-                </SheetHeader>
-                <div className="py-4">
-                  <h3 className="text-sm font-medium mb-2">Intention</h3>
-                  <div className="space-y-2">
-                    {allIntentions.map((intention) => (
-                      <div
-                        key={intention}
-                        className="flex items-center space-x-2"
+          </div>
+        )}{" "}
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+            <SheetTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Filter className="h-4 w-4" />
+                Filter
+                {(selectedIntentions.length > 0 ||
+                  selectedCrystals.length > 0 ||
+                  priceRange.length > 0) && (
+                  <Badge className="ml-1 bg-[#c9a87c]">
+                    {selectedIntentions.length +
+                      selectedCrystals.length +
+                      priceRange.length}
+                  </Badge>
+                )}
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[300px] sm:w-[400px]">
+              <SheetHeader>
+                <SheetTitle>Filter Products</SheetTitle>
+                <SheetDescription>
+                  Narrow down your search with these filters.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="py-4">
+                <h3 className="text-sm font-medium mb-2">Intention</h3>
+                <div className="space-y-2">
+                  {allIntentions.map((intention) => (
+                    <div
+                      key={intention}
+                      className="flex items-center space-x-2"
+                    >
+                      <Checkbox
+                        id={`intention-${intention}`}
+                        checked={selectedIntentions.includes(intention)}
+                        onCheckedChange={() => toggleIntention(intention)}
+                      />
+                      <Label
+                        htmlFor={`intention-${intention}`}
+                        className="flex items-center gap-2"
                       >
-                        <Checkbox
-                          id={`intention-${intention}`}
-                          checked={selectedIntentions.includes(intention)}
-                          onCheckedChange={() => toggleIntention(intention)}
-                        />
-                        <Label
-                          htmlFor={`intention-${intention}`}
-                          className="flex items-center gap-2"
-                        >
-                          <div
-                            className={`w-3 h-3 rounded-full ${
-                              intentionColors[intention]?.split(" ")[0]
-                            }`}
-                          ></div>
-                          {intention}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-
-                  <Separator className="my-4" />
-
-                  <h3 className="text-sm font-medium mb-2">Crystal Type</h3>
-                  <div className="space-y-2 max-h-[200px] overflow-y-auto">
-                    {allCrystals.map((crystal) => (
-                      <div key={crystal} className="flex items-center space-x-2">
-                        <Checkbox
-                          id={`crystal-${crystal}`}
-                          checked={selectedCrystals.includes(crystal)}
-                          onCheckedChange={() => toggleCrystal(crystal)}
-                        />
                         <div
-                          className={`w-3 h-3 rounded-full ${crystalColors[crystal]}`}
+                          className={`w-3 h-3 rounded-full ${
+                            intentionColors[intention]?.split(" ")[0]
+                          }`}
                         ></div>
-                        <Label htmlFor={`crystal-${crystal}`}>{crystal}</Label>
-                      </div>
-                    ))}
+                        {intention}
+                      </Label>
+                    </div>
+                  ))}
+                </div>
+
+                <Separator className="my-4" />
+
+                <h3 className="text-sm font-medium mb-2">Crystal Type</h3>
+                <div className="space-y-2 max-h-[200px] overflow-y-auto">
+                  {allCrystals.map((crystal) => (
+                    <div key={crystal} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={`crystal-${crystal}`}
+                        checked={selectedCrystals.includes(crystal)}
+                        onCheckedChange={() => toggleCrystal(crystal)}
+                      />
+                      <div
+                        className={`w-3 h-3 rounded-full ${crystalColors[crystal]}`}
+                      ></div>
+                      <Label htmlFor={`crystal-${crystal}`}>{crystal}</Label>
+                    </div>
+                  ))}
+                </div>
+
+                <Separator className="my-4" />
+
+                <h3 className="text-sm font-medium mb-2">Price Range</h3>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="price-under-80"
+                      checked={priceRange.includes("under-80")}
+                      onCheckedChange={() => togglePriceRange("under-80")}
+                    />
+                    <Label htmlFor="price-under-80">Under $80</Label>
                   </div>
-
-                  <Separator className="my-4" />
-
-                  <h3 className="text-sm font-medium mb-2">Price Range</h3>
-                  <div className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="price-under-80"
-                        checked={priceRange.includes("under-80")}
-                        onCheckedChange={() => togglePriceRange("under-80")}
-                      />
-                      <Label htmlFor="price-under-80">Under $80</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="price-80-100"
-                        checked={priceRange.includes("80-100")}
-                        onCheckedChange={() => togglePriceRange("80-100")}
-                      />
-                      <Label htmlFor="price-80-100">$80 - $100</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="price-over-100"
-                        checked={priceRange.includes("over-100")}
-                        onCheckedChange={() => togglePriceRange("over-100")}
-                      />
-                      <Label htmlFor="price-over-100">Over $100</Label>
-                    </div>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="price-80-100"
+                      checked={priceRange.includes("80-100")}
+                      onCheckedChange={() => togglePriceRange("80-100")}
+                    />
+                    <Label htmlFor="price-80-100">$80 - $100</Label>
                   </div>
-
-                  <div className="mt-6 flex justify-between">
-                    <Button variant="outline" onClick={clearFilters}>
-                      Clear All
-                    </Button>
-                    <Button onClick={() => setIsSheetOpen(false)}>
-                      Apply Filters
-                    </Button>
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="price-over-100"
+                      checked={priceRange.includes("over-100")}
+                      onCheckedChange={() => togglePriceRange("over-100")}
+                    />
+                    <Label htmlFor="price-over-100">Over $100</Label>
                   </div>
                 </div>
-              </SheetContent>
-            </Sheet>
 
-            <div className="flex items-center gap-2">
-              <SlidersHorizontal className="h-4 w-4" />
-              <span className="text-sm">Sort by:</span>
-              <Select value={sortOption} onValueChange={setSortOption}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="featured">Featured</SelectItem>
-                  <SelectItem value="price-low">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high">Price: High to Low</SelectItem>
-                  <SelectItem value="newest">Newest</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="mb-6 text-[#5c5c5c]">
-            Showing {filteredProducts.length} of {allProducts.length} products
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product: any) => (
-                <Link href={`/product/${product.handle}`} key={product.id}>
-                  <Card
-                    key={product.id}
-                    className="overflow-hidden hover:shadow-md transition-all h-full"
-                  >
-                    <div className="relative h-64">
-                      <Image
-                        src={product.image || "/placeholder.svg"}
-                        alt={product.title}
-                        fill
-                        className="object-cover"
-                      />
-                      <Badge
-                        className={`absolute top-4 left-4 ${
-                          intentionColors[product.metafields.primary_intentions]
-                        }`}
-                      >
-                        {product.metafields.primary_intentions}
-                      </Badge>
-                    </div>
-                    <CardContent className="p-4">
-                      <h3 className="font-medium text-lg mb-1">
-                        {product.title}
-                      </h3>
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        {product.metafields.crystals_included.map(
-                          (crystal: any) => (
-                            <div
-                              key={crystal}
-                              className="inline-flex items-center text-xs bg-white border border-gray-200 rounded-full px-2 py-1"
-                            >
-                              <span
-                                className={`w-2 h-2 rounded-full mr-1 ${crystalColors[crystal]}`}
-                              ></span>
-                              {crystal}
-                            </div>
-                          )
-                        )}
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <div className="font-medium text-[#c9a87c]">
-                          ${product.price}
-                        </div>
-                        <Button
-                          size="sm"
-                          className="bg-[#c9a87c] hover:bg-[#b89b72] text-white"
-                        >
-                          <ShoppingBag className="h-4 w-4 mr-1" />
-                          Add
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))
-            ) : (
-              <div className="col-span-full text-center py-12">
-                <p className="text-lg text-gray-500">
-                  No products match your filters.
-                </p>
-                <Button variant="outline" className="mt-4" onClick={clearFilters}>
-                  Clear Filters
-                </Button>
+                <div className="mt-6 flex justify-between">
+                  <Button variant="outline" onClick={clearFilters}>
+                    Clear All
+                  </Button>
+                  <Button onClick={() => setIsSheetOpen(false)}>
+                    Apply Filters
+                  </Button>
+                </div>
               </div>
-            )}
-          </div>
-        </main>
+            </SheetContent>
+          </Sheet>
 
-        <Footer />
+          <div className="flex items-center gap-2">
+            <SlidersHorizontal className="h-4 w-4" />
+            <span className="text-sm">Sort by:</span>
+            <Select value={sortOption} onValueChange={setSortOption}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="featured">Featured</SelectItem>
+                <SelectItem value="price-low">Price: Low to High</SelectItem>
+                <SelectItem value="price-high">Price: High to Low</SelectItem>
+                <SelectItem value="newest">Newest</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+        <div className="mb-6 text-[#5c5c5c]">
+          Showing {filteredProducts.length} of {allProducts.length} products
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredProducts.length > 0 ? (
+            filteredProducts.map((product: any) => (
+              <Link href={`/product/${product.handle}`} key={product.id}>
+               <Card
+  key={product.id}
+  className="overflow-hidden hover:shadow-xl transition-all h-full rounded-lg bg-white shadow-lg hover:shadow-2xl"
+>
+  <div className="relative h-64">
+    <Image
+      src={product.image || "/placeholder.svg"}
+      alt={product.title}
+      fill
+      className="object-cover rounded-t-lg"
+    />
+    <Badge
+      className={`absolute top-4 left-4 px-3 py-1 text-xs font-medium rounded-full ${
+        intentionColors[product.metafields.primary_intentions]
+      }`}
+    >
+      {product.metafields.primary_intentions}
+    </Badge>
+  </div>
+
+  <CardContent className="p-6 relative border-t-2 border-gray-200 flex flex-col">
+    <div className="flex-1">
+      <h3 className="font-semibold text-s md:text-s mb-2 truncate text-gray-800">
+        {product.title}
+      </h3>
+      <div className="flex flex-wrap gap-2 mb-4">
+        {product.metafields.crystals_included.map((crystal: any) => (
+          <div
+            key={crystal}
+            className="inline-flex items-center text-xs bg-white border border-gray-200 rounded-full px-2 py-1"
+          >
+            <span
+              className={`w-2 h-2 rounded-full mr-2 ${crystalColors[crystal]}`}
+            ></span>
+            {crystal}
+          </div>
+        ))}
       </div>
+    </div>
+
+    <div className="font-medium text-s text-[#c9a87c] z-100 self-end">
+      ${product.price}
+    </div>
+  </CardContent>
+</Card>
+
+
+
+
+
+
+
+              </Link>
+            ))
+          ) : (
+            <div className="col-span-full text-center py-12">
+              <p className="text-lg text-gray-500">
+                No products match your filters.
+              </p>
+              <Button variant="outline" className="mt-4" onClick={clearFilters}>
+                Clear Filters
+              </Button>
+            </div>
+          )}
+        </div>
+      </main>
+
+      <Footer />
     </div>
   );
 }
+
