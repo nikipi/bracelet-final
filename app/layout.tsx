@@ -16,27 +16,15 @@ const playfair = Playfair_Display({
 
 export default function RootLayout({
   children,
-  params,
 }: Readonly<{
   children: React.ReactNode;
-  params: { slug: string | undefined };
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <title>{params?.slug ? `${params.slug} - Yumiere` : 'Yumiere - Find your crystal'}</title>
-        <meta name="description" content="Discover handcrafted crystal bracelets designed to support your energy needs. Each piece is carefully curated with specific intentions and healing properties." />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Yumiere - Gemstone Jewelry | Luxury Handcrafted Jewelry | Healing Crystals</title>
         <link rel="icon" type="image/png" sizes="16x16" href="/logo.png" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="Yumiere - Find your crystal" />
-        <meta property="og:description" content="Discover handcrafted crystal bracelets designed to support your energy needs. Each piece is carefully curated with specific intentions and healing properties." />
-        <meta property="og:image" content="/images/crystal-bracelet.png" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Yumiere - Find your crystal" />
-        <meta name="twitter:description" content="Discover handcrafted crystal bracelets designed to support your energy needs. Each piece is carefully curated with specific intentions and healing properties." />
-        <meta name="twitter:image" content="/images/crystal-bracelet.png" />
       </head>
       <RootContext>
         <ManagedUIContext>
