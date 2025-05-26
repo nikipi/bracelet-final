@@ -137,6 +137,7 @@ export default function MostLovedDesigns() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
+              <Link href={`/product/${product.handle}`} key={product.id}>
               <Card className="overflow-hidden hover:shadow-md transition-all h-full">
                 <div className="relative h-64">
                   <Image
@@ -170,6 +171,7 @@ export default function MostLovedDesigns() {
                   </div>
                 </CardContent>
               </Card>
+              </Link>
             </motion.div>
           ))}
         </div>

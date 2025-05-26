@@ -8,7 +8,7 @@ export async function ShopifyData(query: string) {
     endpoint: URL,
     method: "POST",
     headers: {
-      "X-Shopify-Storefront-Access-Token": "cfc86bdf3dbaaf678314a95ee0f6cead",
+      "X-Shopify-Storefront-Access-Token": "9f0940f19993da46c7173557c3566059",
       Accept: "application/json",
       "Content-Type": "application/json",
     },
